@@ -40,7 +40,7 @@ By default, we decode the videos on the fly using [decord](https://github.com/dm
 For example , we train our model on hmdb51 with:.
 
 ```bash
-bash bash scripts/run_train.sh configs/hmdb51/hmdb_train.yaml
+bash scripts/run_train.sh configs/hmdb51/hmdb_train.yaml
 ```
 
 ## Testing
