@@ -37,7 +37,7 @@ By default, we decode the videos on the fly using [decord](https://github.com/dm
 
 ## Training
 
-By default , we train our model on Kinetics-400 in a *Single Machine*.
+For example , we train our model on hmdb51 with:.
 
 ```bash
 bash bash scripts/run_train.sh configs/hmdb51/hmdb_train.yaml
