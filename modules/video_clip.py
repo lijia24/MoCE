@@ -257,11 +257,7 @@ class VideoTransformer(nn.Module):
         if desc_embeds is not None and cls_emb is not None: #Training
             selected_cls_emb = cls_emb[labels]
             selected_cls_emb = selected_cls_emb.unsqueeze(1).expand(-1, T, -1) 
-            # desc_embeds=desc_embeds.unsqueeze(1)
-            # desc_embeds_adapter=self.background_adapter(desc_embeds)
             x=self.video_adapter(x)
-            #sim=F.cosine_similarity(x.mean(dim=1), desc_embeds, dim=1)
-            #x=x-sim.view(B, 1, 1)*desc_embeds.unsqueeze(1)
             desc_embeds=desc_embeds.unsqueeze(1).expand(-1, T, -1)
             
             delta = x-desc_embeds
@@ -269,20 +265,15 @@ class VideoTransformer(nn.Module):
             gate = (gate > 0).float()
             alpha=0.1
             x=x + alpha * gate * delta
-
-            #total-background=action 
-        
-            # 对x进行时间维度平均池化，得到(B, D)
             x_pooled = x.mean(dim=1)  # (B, D)
             cls_emb_pool=cls_emb[labels]           
-            # 计算余弦相似度作为CLIP score
+            
 
             x_ori_pool=x_ori.mean(dim=1)
             clip_score = F.cosine_similarity(F.normalize(x_pooled, p=2, dim=-1), cls_emb_pool, dim=1)
 
             clip_score_ori = F.cosine_similarity(F.normalize(x_ori_pool, p=2, dim=-1), cls_emb_pool, dim=1)
             # print(f"减去背景的CLIP Score: {clip_score.mean().item():.4f}") 
-
             # print(f"原始的的CLIP Score: {clip_score_ori.mean().item():.4f}") 
         if frame_position_embeddings is not None:
             x=x+frame_position_embeddings
