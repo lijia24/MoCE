@@ -1,0 +1,31 @@
+#bash scripts/run_test_zeroshot.sh configs/ucf101/ucf_test.yaml exps_MoTE/k400/ViT-B/16/20250926_101214/model_best.pt --test_clips 1
+seed: 1024
+data:
+    dataset: ucf101
+    modality: video
+    num_segments: 8
+    seg_length: 1
+    batch_size: 256
+    workers: 8
+    num_classes: 101
+    image_tmpl: 'image_{:04d}.jpg'
+    val_root: 'xxx/ucf101'
+    val_list: 'lists/ucf101/test.txt'
+    val_desc_list: 'lists_split/ucf101/test_background_desc.csv'
+    label_list: 'lists/ucf101/ucf101_rephrase_merged.csv'
+    spatial_label_list: 'lists/ucf101/ucf101_spatial_label.csv'
+    template_label_list: 'lists/ucf101/ucf101_temporal_label.csv'
+    index_bias: 1
+    input_size: 224
+network:
+    arch: ViT-B/16 # ViT-L/14  
+    init: True
+    drop_out: 0.0
+    emb_dropout: 0.0 
+    sim_header: Transf # Transf, None
+    interaction: DP    # DP
+    temporal_layer: 4
+    num_experts: 4  #  >1: MoTE; <=1: mlp
+logging:
+    print_freq: 10
+    eval_freq: 1

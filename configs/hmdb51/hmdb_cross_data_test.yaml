@@ -1,0 +1,30 @@
+#bash scripts/run_test_zeroshot.sh configs/hmdb51/hmdb_cross_data_test.yaml exps_MoTE/k400/ViT-B/16/20250926_101214/model_best.pt --test_clips 1
+
+seed: 1024
+data:
+    dataset: hmdb51
+    modality: video
+    num_segments: 8
+    seg_length: 1
+    batch_size: 16
+    workers: 8
+    num_classes: 51
+    image_tmpl: 'image_{:06d}.jpg'
+    val_root: '/hmdb51'
+    val_list: 'lists/hmdb51/test_zero_shot.txt'    
+    label_list: 'lists/hmdb51/hmdb51_rephrase_merged.csv'
+    spatial_label_list: 'lists/hmdb51/hmdb51_spatial_label.csv'
+    template_label_list: 'lists/hmdb51/hmdb51_temporal_label.csv'
+    index_bias: 1
+    input_size: 224
+network:
+    arch: ViT-B/16 # ViT-L/14 
+    init: True
+    drop_out: 0.0
+    emb_dropout: 0.0
+    sim_header: Transf # Transf, None
+    interaction: DP    # DP
+    num_experts: 4 
+logging:
+    print_freq: 10
+    eval_freq: 1

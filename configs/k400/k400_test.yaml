@@ -1,0 +1,30 @@
+#bash scripts/run_test_zeroshot.sh configs/k400/k400_test.yaml exps_MoTE/k400/ViT-B/16/base/model_best.pt --test_clips 1
+seed: 1024
+data:
+    dataset: k400
+    modality: video
+    num_segments: 8
+    seg_length: 1
+    batch_size: 512
+    workers: 8
+    num_classes: 51
+    image_tmpl: 'image_{:06d}.jpg'
+    val_root: '/mnt/moonfs/lijia-m2/code02/data/k400/compress/'
+    val_list: 'lists/k400/test_novel.txt'  
+    spatial_label_list: 'lists/k400/k400_spatial_label.csv'
+    template_label_list: 'lists/k400/k400_temporal_label.csv'
+    label_list: 'lists/k400/k400_rephrased.csv'
+    index_bias: 1
+    input_size: 224
+network:
+    arch: ViT-B/16 # ViT-L/14 
+    init: True
+    drop_out: 0.0
+    emb_dropout: 0.0
+    sim_header: Transf # Transf, None
+    interaction: DP    # DP
+    temporal_layer: 4
+    num_experts: 4  #  >1: MoTE; <=1: mlp
+logging:
+    print_freq: 10
+    eval_freq: 1
